@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\danz\Desktop\pyton application\BookingsCache\env"
+VIRTUAL_ENV="C:\Users\danz\Desktop\PythonApp\BookingsCache\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
