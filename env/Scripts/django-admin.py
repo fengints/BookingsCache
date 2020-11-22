@@ -1,4 +1,4 @@
-#!c:\users\danz\desktop\pyton application\bookingscache\env\scripts\python.exe
+#!c:\users\danz\desktop\pythonapp\bookingscache\env\scripts\python.exe
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

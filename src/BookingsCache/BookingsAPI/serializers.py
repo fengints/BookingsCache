@@ -1,4 +1,4 @@
 from rest_framework import serializers
 
 class MySerializer(serializers.Serializer):
-    data = serializers.CharField()
+    data = serializers.JSONField()

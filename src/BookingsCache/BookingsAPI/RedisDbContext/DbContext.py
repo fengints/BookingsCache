@@ -1,5 +1,5 @@
 import redis
-from . import settings.SETTINGS as s
+from .settings import SETTINGS as s
 
 
 class RedisDbContext:
@@ -7,13 +7,13 @@ class RedisDbContext:
         self.context = redis.Redis(s["host"], s["port"], s["db"])
 
     def get(self, key):
-        return context.get(key)
+        return self.context.get(key)
 
     def mset(self, **kwargs):
-        return context.mset(kwargs)
+        return self.context.mset(kwargs)
 
     def set(self, key, value):
-        return context.set(key, value)
+        return self.context.set(key, value)
 
 
 
