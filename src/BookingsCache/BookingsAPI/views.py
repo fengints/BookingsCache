@@ -10,7 +10,7 @@ import asyncio
 from .RedisDbContext.DbContext import RedisDbContext
 
 class MyView(rf_views.APIView):
-
+    '''Get data from redis instance'''
     def get(self, request):
         """ #define data
         dbc = RedisDbContext()
@@ -19,27 +19,24 @@ class MyView(rf_views.APIView):
         #take it
         data = dbc.get('MyKey') """
 
-        async def testAsync():
-            asyncio.set_event_loop(asyncio.ProactorEventLoop())
-            await asyncio.sleep(10)
-            print("finished")
-
         #start task
         #ioloop = asyncio.ProactorEventLoop()
         #asyncio.set_event_loop(ioloop)
         #mytask.delay(1,"123")
 
         #test taking data
-        from .DataProvider import DataProvider
+        from .DataProvider import DataProvider, DataProvider2
         import datetime as dtime
 
-        dp = DataProvider()
+        #zone dataprovider test
+        dp = DataProvider2()
         ffrom = "ALA"; fto = "TSE"
         dfrom = dtime.date(2020, 11, 24)
         dto = dtime.date(2020, 12, 26)
 
         future_responses = dp.GetDataBy(ffrom, fto, dfrom, dto)
         response = [resp.result().json() for resp in future_responses]
+        #end zone
 
         yourdata= [{"data": response}]
 
