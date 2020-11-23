@@ -25,16 +25,16 @@ class MyView(rf_views.APIView):
         #mytask.delay(1,"123")
 
         #test taking data
-        from .DataProvider import DataProvider, DataProvider2
+        from .DataProvider import DataProvider
         import datetime as dtime
 
         #zone dataprovider test
-        dp = DataProvider2()
+        dp = DataProvider()
         ffrom = "ALA"; fto = "TSE"
         dfrom = dtime.date(2020, 11, 24)
         dto = dtime.date(2020, 12, 26)
 
-        future_responses = dp.GetDataBy(ffrom, fto, dfrom, dto)
+        future_responses = dp.GetFutureDataBy(ffrom, fto, dfrom, dto)
         response = [resp.result().json() for resp in future_responses]
         #end zone
 

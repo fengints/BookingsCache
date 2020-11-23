@@ -11,25 +11,30 @@ class DataProvider:
         self.session = FuturesSession(max_workers = 30)
         self.url = 'https://api.skypicker.com/flights'
 
-    def GetDataForNextMonth(self):
-        pass
-    def GetDataBy(self, fly_from, fly_to, date_from, date_to, response_handler = None):
+    def GetDataForNextMonth(self, fly_from, fly_to):
+        dfrom = datetime.now()
+        dto = dfrom + timedelta(days=30)
+
+        future_responses = self.GetFutureDataBy(fly_from, fly_to, dfrom, dto)
+        responses = [resp.result().json() for resp in future_responses]
+
+        return responses
+
+    def GetFutureDataBy(self, fly_from, fly_to, date_from, date_to, response_handler = None):
         response_list = []
         PARAMS = {'fly_from':fly_from, 'fly_to': fly_to, "partner":"picky"}
 
         for date in dutils.datesIterator(date_from, date_to):
-            self.on_loop_operation(self.url, PARAMS, date, response_list)
+            future = self.request_data(self.url, PARAMS, date)
+            response_list.append(future)
 
         return response_list
     
-
-    def on_loop_operation(self, url, Params, desired_date: datetime, response_list):
+    def request_data(self, url, Params, desired_date: datetime):
             parameters = Params.copy()
-            
+            desired_dateStr = desired_date.strftime('%d/%m/%Y')
             parameters.update(
-                {'date_from' : desired_date.strftime('%d/%m/%Y'),
-                 'date_to': desired_date.strftime('%d/%m/%Y') })
+                {'date_from' : desired_dateStr,
+                 'date_to': desired_dateStr })
 
-            action_item = self.session.get(url, params = parameters,)# hooks = {'response' : response_handler})
-
-            response_list.append(action_item)
+            return self.session.get(url, params = parameters,)# hooks = {'response' : response_handler})
