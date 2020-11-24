@@ -25,7 +25,10 @@ class datesIterator:
         if (isDateEqual(self.curday, self.date_end)):
             raise StopIteration
         
+        #set return value
+        return_date = self.curday
+
         #add next day
         self.curday += timedelta(days=1)
 
-        return self.curday
+        return return_date

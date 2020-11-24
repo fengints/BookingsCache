@@ -25,16 +25,19 @@ class DataProvider:
         PARAMS = {'fly_from':fly_from, 'fly_to': fly_to, "partner":"picky"}
 
         for date in dutils.datesIterator(date_from, date_to):
-            future = self.request_data(self.url, PARAMS, date)
+            future = self.request_data(self.url, PARAMS, date, response_handler)
             response_list.append(future)
 
         return response_list
     
-    def request_data(self, url, Params, desired_date: datetime):
-            parameters = Params.copy()
-            desired_dateStr = desired_date.strftime('%d/%m/%Y')
-            parameters.update(
-                {'date_from' : desired_dateStr,
-                 'date_to': desired_dateStr })
+    def request_data(self, url, Params, desired_date: datetime, response_handler = None):
+        if (response_handler is None):
+            response_handler = {}
+            
+        parameters = Params.copy()
+        desired_dateStr = desired_date.strftime('%d/%m/%Y')
+        parameters.update(
+            {'date_from' : desired_dateStr,
+             'date_to': desired_dateStr })
 
-            return self.session.get(url, params = parameters,)# hooks = {'response' : response_handler})
+        return self.session.get(url, params = parameters, hooks = {'response' : response_handler})

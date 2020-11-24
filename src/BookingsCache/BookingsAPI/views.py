@@ -31,14 +31,13 @@ class MyView(rf_views.APIView):
         #zone dataprovider test
         dp = DataProvider()
         ffrom = "ALA"; fto = "TSE"
-        dfrom = dtime.date(2020, 11, 24)
-        dto = dtime.date(2020, 12, 26)
+        #dfrom = dtime.date(2020, 11, 24)
+        #dto = dtime.date(2020, 12, 26)
 
-        future_responses = dp.GetFutureDataBy(ffrom, fto, dfrom, dto)
-        response = [resp.result().json() for resp in future_responses]
+        response = dp.GetDataForNextMonth(ffrom, fto)
         #end zone
 
-        yourdata= [{"data": response}]
+        yourdata= {"data": response}
 
         results = MySerializer(yourdata, many = True).data
         return Response(results)
