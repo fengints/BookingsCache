@@ -15,19 +15,21 @@ class DataProvider:
         dfrom = datetime.now()
         dto = dfrom + timedelta(days=30)
 
-        future_responses = self.GetFutureDataBy(fly_from, fly_to, dfrom, dto)
-        responses = [resp.result().json() for resp in future_responses]
+        def response_hook(response, *args, **kwargs):
+            response.data = response.json()
+            
+        future_responses = self.GetFutureDataBy(fly_from, fly_to, dfrom, dto, response_hook)
+        responses = {date : resp.result().data for date, resp in future_responses.items()}
 
         return responses
 
     def GetFutureDataBy(self, fly_from, fly_to, date_from, date_to, response_handler = None):
-        response_list = []
+        response_list = {}
         PARAMS = {'fly_from':fly_from, 'fly_to': fly_to, "partner":"picky"}
 
         for date in dutils.datesIterator(date_from, date_to):
             future = self.request_data(self.url, PARAMS, date, response_handler)
-            response_list.append(future)
-
+            response_list[str(date.date())] = future
         return response_list
     
     def request_data(self, url, Params, desired_date: datetime, response_handler = None):

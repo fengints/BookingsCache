@@ -39,5 +39,5 @@ class MyView(rf_views.APIView):
 
         yourdata= {"data": response}
 
-        results = MySerializer(yourdata, many = True).data
+        results = MySerializer(yourdata).data
         return Response(results)
